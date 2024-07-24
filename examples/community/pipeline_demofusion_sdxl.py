@@ -1296,8 +1296,10 @@ class DemoFusionSDXLPipeline(
                     is_model_cpu_offload = isinstance(getattr(component, "_hf_hook"), CpuOffload)
                     is_sequential_cpu_offload = (
                         isinstance(getattr(component, "_hf_hook"), AlignDevicesHook)
+                        and component._hf_hook.offload
                         or hasattr(component._hf_hook, "hooks")
                         and isinstance(component._hf_hook.hooks[0], AlignDevicesHook)
+                        and component._hf_hook.hooks[0].offload
                     )
                     logger.info(
                         "Accelerate hooks detected. Since you have called `load_lora_weights()`, the previous hooks will be first removed. Then the LoRA parameters will be loaded and the hooks will be applied again."

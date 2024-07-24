@@ -378,8 +378,10 @@ class DiffusionPipeline(ConfigMixin, PushToHubMixin):
 
             return hasattr(module, "_hf_hook") and (
                 isinstance(module._hf_hook, accelerate.hooks.AlignDevicesHook)
+                and module._hf_hook.offload
                 or hasattr(module._hf_hook, "hooks")
                 and isinstance(module._hf_hook.hooks[0], accelerate.hooks.AlignDevicesHook)
+                and module._hf_hook.offload
             )
 
         def module_is_offloaded(module):
